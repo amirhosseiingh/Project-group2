@@ -18,9 +18,9 @@ const Login = () => {
   const [password, setPassword] = useState("123456789");
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center">
+    <div className="flex flex-col gap-2 justify-center items-center w-full h-screen">
       <input
-        className="border border-black"
+        className="border border-black rounded-md p-2"
         onChange={(e) => {
           setEmail(e.target.value);
         }}
@@ -28,14 +28,14 @@ const Login = () => {
         type="text"
       />
       <input
-        className="border border-black"
+        className="border border-black rounded-md p-2"
         onChange={(e) => {
           setPassword(e.target.value);
         }}
         value={password}
         type="text"
       />
-      <button className="bg-blue-300 p-2" onClick={handlerLogin}>
+      <button className="bg-blue-300 p-2 rounded-md" onClick={handlerLogin}>
         Log in
       </button>
     </div>

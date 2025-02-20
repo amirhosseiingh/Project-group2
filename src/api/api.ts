@@ -23,6 +23,11 @@ apiClient.interceptors.request.use((config) => {
 
 // Add response interceptor for debugging
 apiClient.interceptors.response.use((response) => {
+  if (response.status === 401 && response.config.url !== "/users/login") {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    window.location.href = "/login";
+  }
   return response;
 });
 
