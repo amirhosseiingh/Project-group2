@@ -1,32 +1,27 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from "react";
+import { authAPI } from "../../api/api";
 
 const Login = () => {
   const handlerLogin = async () => {
     try {
-      const response = await axios.post(
-        'http://api.alikooshesh.ir:3000/api/users/login',
-        { email: email, password: password },
-        { headers: { api_key: 'siashoppanel' } }
-      );
+      const response = await authAPI.login({ email, password });
       if (response.status === 200) {
-        localStorage.setItem("accessToken" , response.data.accessToken)
-        window.location.href = "/admin"
+        localStorage.setItem("accessToken", response.data.accessToken);
+        window.location.href = "/products";
       }
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [email, setEmail] = useState('sianami123@gmail.com');
-  const [password, setPassword] = useState('123456789');
+  const [email, setEmail] = useState("sianami123@gmail.com");
+  const [password, setPassword] = useState("123456789");
 
   return (
     <div className="flex flex-col gap-2 justify-center items-center">
       <input
         className="border border-black"
-        onChange={e => {
+        onChange={(e) => {
           setEmail(e.target.value);
         }}
         value={email}
@@ -34,7 +29,7 @@ const Login = () => {
       />
       <input
         className="border border-black"
-        onChange={e => {
+        onChange={(e) => {
           setPassword(e.target.value);
         }}
         value={password}
