@@ -3,8 +3,7 @@ import Layout from "../layout/layout";
 const Admin = () => {
   return (
     <Layout>
-      {" "}
-      <p>test sia</p>{" "}
+      <p>test sia</p>
     </Layout>
   );
 };
