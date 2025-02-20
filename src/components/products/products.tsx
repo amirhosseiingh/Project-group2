@@ -39,8 +39,12 @@ export default function Products() {
   return (
     <Layout>
       <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Products</h1>
-
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold mb-4">Products</h1>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+            Add Product
+          </button>
+        </div>
         {loading && <div>Loading products...</div>}
 
         {error && (
@@ -56,19 +60,25 @@ export default function Products() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex items-center gap-4 hover:bg-slate-200 p-2 rounded-md cursor-pointer"
+                className="flex items-center justify-between gap-4 px-4 bg-slate-100 hover:bg-slate-200 p-2 rounded-md cursor-pointer"
               >
-                <img
-                  src={product.imageURL}
-                  alt={product.title}
-                  className="w-1/12"
-                />
-                <h2>{product.title}</h2>
-                <p>{product.price}</p>
-                <p>{product.inventory}</p>
-                {Array.from({ length: product.rating }).map((_, index) => (
-                  <AiFillStar key={index} className="w-4 h-4" />
-                ))}
+                <div className="flex items-center gap-4">
+                  <img
+                    src={product.imageURL}
+                    alt={product.title}
+                    className="w-1/12"
+                  />
+                  <h2>{product.title}</h2>
+                  <p>{product.price}</p>
+                  <p>{product.inventory}</p>
+                  {Array.from({ length: product.rating }).map((_, index) => (
+                    <AiFillStar key={index} className="w-4 h-4" />
+                  ))}
+                </div>
+                <div className="flex items-center gap-4">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
               </div>
             ))}
           </div>
