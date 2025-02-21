@@ -1,7 +1,11 @@
-import { useState, useEffect } from "react";
-import { AiFillStar } from "react-icons/ai";
-import Layout from "../layout/layout";
-import { productsAPI } from "../../api/api";
+import { useState, useEffect } from 'react';
+import { AiFillStar } from 'react-icons/ai';
+import Layout from '../layout/layout';
+import { productsAPI } from '../../api/api';
+import { MdDeleteForever, MdOutlineEditNote } from 'react-icons/md';
+import { useDisclosure } from '@chakra-ui/react';
+import AddingModal from '../modal/modal';
+
 
 interface Product {
   id: string;
@@ -13,7 +17,10 @@ interface Product {
   createdAt: string;
 }
 
+
+
 export default function Products() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +30,7 @@ export default function Products() {
     setError(null);
     try {
       const response = await productsAPI.getProducts();
-      console.log("Products fetched successfully:", response.data.records);
+      console.log('Products fetched successfully:', response.data.records);
       setProducts(response.data.records);
     } catch (error: any) {
       setError(error.message);
@@ -37,11 +44,14 @@ export default function Products() {
   }, []);
 
   return (
+    
     <Layout>
-      <div className="p-4">
+      <div className="p-4 bg-custom-black w-full h-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold mb-4">Products</h1>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+          <h1 className="text-2xl font-bold mb-4 text-custom-white">
+            Products
+          </h1>
+          <button onClick={onOpen} className="bg-blue-500 text-white px-4 py-2 rounded-md">
             Add Product
           </button>
         </div>
@@ -57,33 +67,41 @@ export default function Products() {
 
         {products.length > 0 && (
           <div className="flex flex-col">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="flex items-center justify-between gap-4 px-4 bg-slate-100 hover:bg-slate-200 p-2 rounded-md cursor-pointer"
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={product.imageURL}
-                    alt={product.title}
-                    className="w-1/12"
-                  />
-                  <h2>{product.title}</h2>
-                  <p>{product.price}</p>
-                  <p>{product.inventory}</p>
-                  {Array.from({ length: product.rating }).map((_, index) => (
-                    <AiFillStar key={index} className="w-4 h-4" />
-                  ))}
-                </div>
-                <div className="flex items-center gap-4">
-                  <button>Edit</button>
-                  <button>Delete</button>
-                </div>
-              </div>
-            ))}
+             <table className='bg-custom-gray'>
+                <thead className='h-10'>
+                  <tr>
+                    <th className='text-custom-white '>Image</th>
+                    <th className='text-custom-white'>Name</th>
+                    <th className='text-custom-white'>Price</th>
+                    <th className='text-custom-white'>Quantity</th>
+                    <th className='text-custom-white'>Rating</th>
+                    <th className='text-custom-white'>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {products.map(product => (
+                  <tr className='bg-custom-white border border-custom-black  '>
+                    <td className='flex justify-center items-center'><img className=' min-h-20 w-20 p-2 rounded-lg' src={product.imageURL} alt="productImage" /></td>
+                    <td className='text-center'>{product.title}</td>
+                    <td className='text-center'>{product.price}</td>
+                    <td className='text-center'>{product.inventory}</td>
+                    <td className='text-center'>{product.rating}</td>
+                    <td className='text-center '>
+                      <button className='bg-red-700 rounded-lg p-2 mx-2'><MdDeleteForever /></button>
+                      
+                      <button className='bg-yellow-500 rounded-lg p-2'><MdOutlineEditNote /></button>
+                    </td>
+                  </tr>
+
+                ))}
+                </tbody>
+              </table>
+            
           </div>
         )}
       </div>
+      <AddingModal onClose= {onClose} isOpen = {isOpen} />
     </Layout>
+    
   );
 }

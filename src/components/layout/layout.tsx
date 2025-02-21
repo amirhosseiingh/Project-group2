@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
       <div className="w-[10%]">
         <Sidebar />
       </div>
-      <div className="">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
