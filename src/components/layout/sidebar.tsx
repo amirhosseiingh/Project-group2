@@ -1,17 +1,40 @@
+import { useNavigate } from "react-router";
 
 const Sidebar = () => {
-    return (
-        <div className='w-full h-full bg-slate-700 flex flex-col gap-2 p-5'>
-            <ul>
-                <li className='text-white'>products</li>
-                <li className='text-white'>inventory</li>
-                <li className='text-white'>users</li>
-                <li className='text-white'>orders</li>
-                <li className='text-white'>logout</li>
-                <li className='text-white'>profile</li>
-            </ul>
-        </div>
-    );
-}
+  const navigate = useNavigate();
+  return (
+    <div className=" h-full bg-slate-700 flex flex-col gap-2 p-5">
+      <ul>
+        <li
+          onClick={() => navigate("/products")}
+          className="text-white hover:bg-slate-600 p-2 rounded-md cursor-pointer"
+        >
+          products
+        </li>
+        <li
+          onClick={() => navigate("/inventory")}
+          className="text-white hover:bg-slate-600 p-2 rounded-md cursor-pointer"
+        >
+          inventory
+        </li>
+        <li
+          onClick={() => navigate("/users")}
+          className="text-white hover:bg-slate-600 p-2 rounded-md cursor-pointer"
+        >
+          users
+        </li>
+        <li className="text-white hover:bg-slate-600 p-2 rounded-md cursor-pointer">
+          orders
+        </li>
+        <li className="text-white hover:bg-slate-600 p-2 rounded-md cursor-pointer">
+          logout
+        </li>
+        <li className="text-white hover:bg-slate-600 p-2 rounded-md cursor-pointer">
+          profile
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export default Sidebar;
