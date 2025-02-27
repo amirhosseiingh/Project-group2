@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IProduct } from "../interfaces/Iproduct";
 
 const API_BASE_URL = "http://api.alikooshesh.ir:3000/api";
 const PRODUCTS_BASE_URL = "http://api.alikooshesh.ir:3000/api/records/products";
@@ -40,9 +41,6 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
 }
-interface IProduct{
-id? : string , title : string , price : number , imageURL : string , inventory : number , rating : number
-}
 
 export const authAPI = {
   login: async (credentials: LoginCredentials) => {
@@ -63,22 +61,17 @@ export const productsAPI = {
     const response = await apiClient.get(PRODUCTS_BASE_URL);
     return response;
   },
-  createProduct : async ({title , price , imageURL , inventory , rating} : IProduct)=>{
+  createProduct: async ({ title, price, imageURL, inventory }: IProduct) => {
     try {
-      const response = await apiClient.post(PRODUCTS_BASE_URL , {
-        title ,
+      const response = await apiClient.post(PRODUCTS_BASE_URL, {
+        title,
         price,
         imageURL,
         inventory,
-        rating 
-        } 
-       )
-       return response.data
+      });
+      return response;
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  },
 };
-
-
