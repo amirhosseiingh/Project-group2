@@ -4,13 +4,15 @@ import Layout from "../layout/layout";
 import { productsAPI } from "../../api/api";
 import { MdDeleteForever, MdOutlineEditNote } from "react-icons/md";
 import { useDisclosure } from "@chakra-ui/react";
-import AddingModal from "../modal/modal";
+import AddingModal from "../modal/adding_modal";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../../redux/reducers/productsReducer";
 import { IProduct } from "../../interfaces/Iproduct";
-
+import EditModal from "../modal/edit_modal";
 export default function Products() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<IProduct>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -35,6 +37,19 @@ export default function Products() {
     fetchProducts();
   }, []);
 
+  const handleEditProduct = (product: IProduct) => {
+    setSelectedProduct(product);
+    setIsEditMode(true);
+    if (selectedProduct) {
+      onOpen();
+    }
+  };
+
+  const handleAddProduct = () => {
+    setIsEditMode(false);
+    onOpen();
+  };
+
   return (
     <Layout>
       <div className="p-4 bg-custom-black w-full h-full">
@@ -43,7 +58,7 @@ export default function Products() {
             Products
           </h1>
           <button
-            onClick={onOpen}
+            onClick={handleAddProduct}
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
             Add Product
@@ -94,7 +109,10 @@ export default function Products() {
                         <MdDeleteForever />
                       </button>
 
-                      <button className="bg-yellow-500 rounded-lg p-2">
+                      <button
+                        onClick={() => handleEditProduct(product)}
+                        className="bg-yellow-500 rounded-lg p-2"
+                      >
                         <MdOutlineEditNote />
                       </button>
                     </td>
@@ -105,7 +123,18 @@ export default function Products() {
           </div>
         )}
       </div>
-      <AddingModal onClose={onClose} isOpen={isOpen} />
+
+      {isEditMode ? (
+        selectedProduct && (
+          <EditModal
+            onClose={onClose}
+            isOpen={isOpen}
+            product={selectedProduct}
+          />
+        )
+      ) : (
+        <AddingModal onClose={onClose} isOpen={isOpen} />
+      )}
     </Layout>
   );
 }

@@ -1,9 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct } from "../../interfaces/Iproduct";
+const initialState: IProduct[] = [
+  {
+    id: "1",
+    title: "test",
+    price: 100,
+    imageURL: "test",
+    inventory: 10,
+    rating: 5,
+  },
+];
 
 const productsReducer = createSlice({
   name: "products",
-  initialState: [] as IProduct[],
+  initialState: initialState as IProduct[],
   reducers: {
     setProducts: (state: IProduct[], action: PayloadAction<IProduct[]>) => {
       return action.payload;
