@@ -1,27 +1,37 @@
-import { useState, useEffect } from 'react';
-import { AiFillStar } from 'react-icons/ai';
-import Layout from '../layout/layout';
-import { productsAPI } from '../../api/api';
-import { MdDeleteForever, MdOutlineEditNote } from 'react-icons/md';
+import { useState, useEffect } from "react";
+import { AiFillStar } from "react-icons/ai";
+import Layout from "../layout/layout";
+import { productsAPI } from "../../api/api";
+import { MdDeleteForever, MdOutlineEditNote } from "react-icons/md";
 // import { Heading, HStack, Stack, Table, useDisclosure } from '@chakra-ui/react';
-import AddingModal from '../modal/adding_modal';
-import { useDispatch, useSelector } from 'react-redux';
+import AddingModal from "../modal/adding_modal";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setProducts,
   deleteProduct,
-} from '../../redux/reducers/productsReducer';
-import { IProduct } from '../../interfaces/Iproduct';
-import EditModal from '../modal/edit_modal';
-import axios from 'axios';
+} from "../../redux/reducers/productsReducer";
+import { IProduct } from "../../interfaces/Iproduct";
+import EditModal from "../modal/edit_modal";
+import axios from "axios";
 
-import { HStack, Heading, Stack, Table, useDisclosure } from '@chakra-ui/react';
+import {
+  HStack,
+  Heading,
+  Stack,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination";
-
 
 export default function Products() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,16 +41,16 @@ export default function Products() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const products = useSelector((state: any) => state.products);
-  console.log('products', products);
+  console.log("products", products);
 
   async function fetchProducts() {
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get(
-        'https://67c1934d61d8935867e38135.mockapi.io/shop'
+        "https://67c1934d61d8935867e38135.mockapi.io/shop"
       );
-      console.log('Products fetched successfully:', response.data);
+      console.log("Products fetched successfully:", response.data);
       dispatch(setProducts(response.data));
     } catch (error: any) {
       setError(error.message);
@@ -154,28 +164,49 @@ export default function Products() {
       </div> */}
       <Stack width="full" gap="5">
         <Heading size="xl">Products</Heading>
-        <Table.Root size="sm" variant="outline" striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>Image</Table.ColumnHeader>
-              <Table.ColumnHeader>Name</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="end">Quantity</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="end">Rating</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="end">Action</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {products?.map(item => (
-              <Table.Row key={item.id}>
-                <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.price}</Table.Cell>
-                <Table.Cell textAlign="end">{item.inventory}</Table.Cell>
-                <Table.Cell textAlign="end">{item.rating}</Table.Cell>
-              </Table.Row>
+        <Table size="sm" variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Image</Th>
+              <Th>Name</Th>
+              <Th isNumeric>Price</Th>
+              <Th isNumeric>Quantity</Th>
+              <Th isNumeric>Rating</Th>
+              <Th isNumeric>Action</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {products?.map((item: IProduct) => (
+              <Tr key={item.id}>
+                <Td>
+                  <img
+                    className="min-h-20 w-20 p-2 rounded-lg"
+                    src={item.imageURL}
+                    alt={item.title}
+                  />
+                </Td>
+                <Td>{item.title}</Td>
+                <Td isNumeric>{item.price}</Td>
+                <Td isNumeric>{item.inventory}</Td>
+                <Td isNumeric>{item.rating}</Td>
+                <Td isNumeric>
+                  <button
+                    onClick={() => handleDeleteProduct(item.id!)}
+                    className="bg-red-700 rounded-lg p-2 mx-2"
+                  >
+                    <MdDeleteForever />
+                  </button>
+                  <button
+                    onClick={() => handleEditProduct(item)}
+                    className="bg-yellow-500 rounded-lg p-2"
+                  >
+                    <MdOutlineEditNote />
+                  </button>
+                </Td>
+              </Tr>
             ))}
-          </Table.Body>
-        </Table.Root>
+          </Tbody>
+        </Table>
 
         <PaginationRoot count={products.length * 5} pageSize={5} page={1}>
           <HStack wrap="wrap">
