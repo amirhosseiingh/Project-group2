@@ -1,9 +1,6 @@
 import {
   Button,
-  FormControl,
-  FormLabel,
   Input,
-  InputAddon,
   InputGroup,
   InputLeftAddon,
   Modal,
@@ -13,12 +10,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { addProduct } from "../../redux/reducers/productsReducer";
-import { productsAPI } from "../../api/api";
+import axios from "axios";
 interface IPropsModal {
   isOpen: boolean;
   onClose: () => void;
@@ -27,23 +23,27 @@ interface IPropsModal {
 function AddingModal({ onClose, isOpen }: IPropsModal) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState<number>();
   const [imageURL, setImageURL] = useState("");
-  const [inventory, setInventory] = useState(0);
+  const [inventory, setInventory] = useState<number>();
   const [rating, setRating] = useState(0);
 
   const handleCreateProduct = async () => {
     try {
-      const response = await productsAPI.createProduct({
+      const response = await axios.post('https://67c1934d61d8935867e38135.mockapi.io/shop' , {
         title,
         price,
         imageURL,
         inventory,
+        id : (Date.now()).toString
       });
+
       console.log(response);
       if (response?.status === 201) {
-        dispatch(addProduct({ title, price, imageURL, inventory }));
-        onClose();
+        if (price && inventory) {
+          dispatch(addProduct({ title, price, imageURL, inventory }));
+          onClose();
+        }
       }
     } catch (e) {
       console.log(e);

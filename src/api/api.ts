@@ -2,7 +2,7 @@ import axios from "axios";
 import { IProduct } from "../interfaces/Iproduct";
 
 const API_BASE_URL = "http://api.alikooshesh.ir:3000/api";
-const PRODUCTS_BASE_URL = "http://api.alikooshesh.ir:3000/api/records/products";
+const PRODUCTS_BASE_URL = "https://67c1934d61d8935867e38135.mockapi.io/shop";
 const API_KEY = "siashoppanel";
 
 const apiClient = axios.create({

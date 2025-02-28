@@ -8,9 +8,9 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (!token) {
-      window.location.href = "/login";
-    }
+    // if (!token) {
+    //   window.location.href = "/login";
+    // }
   }, []);
 
   return (

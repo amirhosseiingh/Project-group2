@@ -21,8 +21,12 @@ const productsReducer = createSlice({
     addProduct: (state: IProduct[], action: PayloadAction<IProduct>) => {
       return [...state, action.payload];
     },
+    deleteProduct : (state: IProduct[], action: PayloadAction<string>) => {
+      const data = state.filter(item => item.id !== action.payload)
+      return data;
+    }
   },
 });
 
-export const { setProducts, addProduct } = productsReducer.actions;
+export const { setProducts, addProduct ,  deleteProduct } = productsReducer.actions;
 export default productsReducer.reducer;
