@@ -32,6 +32,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination";
+import { LinkButton } from "../ui/link-button";
 
 export default function Products() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -165,7 +166,11 @@ export default function Products() {
         )}
       </div> */}
       <Stack width="full" gap="5">
-        <Heading size="xl">Products</Heading>
+        <div className="flex justify-between items-center">
+          <Heading size="xl">Products</Heading>
+          <LinkButton onClick={handleAddProduct}>Add Product</LinkButton>
+        </div>
+
         <Table size="sm" variant="simple">
           <Thead>
             <Tr>
