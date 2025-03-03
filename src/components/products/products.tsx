@@ -42,6 +42,8 @@ export default function Products() {
   const dispatch = useDispatch();
   const products = useSelector((state: any) => state.products);
   console.log("products", products);
+  const [page, setPage] = useState(1);
+  const pageSize = 5;
 
   async function fetchProducts() {
     setLoading(true);
@@ -208,15 +210,13 @@ export default function Products() {
           </Tbody>
         </Table>
 
-        <PaginationRoot count={products.length * 5} pageSize={5} page={1}>
-          <HStack wrap="wrap">
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
+        <PaginationRoot
+          count={products?.length || 0}
+          pageSize={pageSize}
+          page={page}
+          onPageChange={setPage}
+        />
       </Stack>
-      )
       {isEditMode ? (
         selectedProduct && (
           <EditModal

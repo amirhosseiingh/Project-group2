@@ -30,13 +30,16 @@ function AddingModal({ onClose, isOpen }: IPropsModal) {
 
   const handleCreateProduct = async () => {
     try {
-      const response = await axios.post('https://67c1934d61d8935867e38135.mockapi.io/shop' , {
-        title,
-        price,
-        imageURL,
-        inventory,
-        id : (Date.now()).toString
-      });
+      const response = await axios.post(
+        "https://67c1934d61d8935867e38135.mockapi.io/shop",
+        {
+          title,
+          price,
+          imageURL,
+          inventory,
+          id: Date.now().toString,
+        }
+      );
 
       console.log(response);
       if (response?.status === 201) {
